@@ -1,0 +1,78 @@
+BackendBundle\Entity\User:
+    type: entity
+    table: user
+    repositoryClass: BackendBundle\Repository\RepositorioUsuario
+    uniqueConstraints:
+        user_uniques_fields:
+            columns:
+                - userNick
+                - mailDir
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        usernick:
+            type: string
+            nullable: true
+            length: 25
+            options:
+                fixed: false
+            column: userNick
+        name:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        surname:
+            type: string
+            nullable: true
+            length: 150
+            options:
+                fixed: false
+        maildir:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: mailDir
+        password:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        userimage:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+            column: userImage
+        biography:
+            type: string
+            nullable: true
+            length: 220
+            options:
+                fixed: false
+        role:
+            type: string
+            nullable: true
+            length: 15
+            options:
+                fixed: false
+        userstatus:
+            type: string
+            nullable: true
+            length: 2
+            options:
+                fixed: false
+            column: userStatus
+    lifecycleCallbacks: {  }

@@ -1,0 +1,41 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+
+ 
+{% block content %}
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 10px;">
+      
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="text-align: center;">Objetivos y requisitos a cumplir</h5>
+                    
+                </div>
+                <div class="modal-body" style="text-align: justify;">
+            
+                        El objetivo de Frontier recae en crear una plataforma blindada para el ciudadano, en el que los partidos políticos, campañas políticas y manipulación política no sean permitidos.
+                        </br></br>Una red social debe ser un lugar completamente blindado a intereses políticos, un lugar de acercamiento entre personas en el que no haya polarizaciones ni bandos. Este proyecto no solamente pretende crear un entorno diferente,
+                        alejado de la toxicidad de las redes sociales actuales, pretende otorgar un lugar en el que se refuercen las relaciones humanas, fácilmente accesible desde la web.
+                        
+                        </br></br>Para un correcto uso de la plataforma debes tener en cuenta los siguientes aspectos:</br></br>
+                        ⚠	No se permiten cuentas de partidos políticos o aquellas que promuevan dicho tipo de contenido.</br>
+                        ⚠   No se permiten cuentas de asociaciones religiosas de ningún tipo o aquellas que promuevan dicho tipo de contenido.</br></br>
+                        ⚠   Respeto total por la sexualidad, identidad de género y origen de cualquier usuario</br></br>
+                        ⚠   Respeta al resto de usuarios, recuerda que estamos aquí para desconectar</br></br>
+                        ⚠	Si se detecta cierto tipo de contenido y se dispone a publicarlo, será notificado de que va en contra de los principios de la plataforma, debiendo modificar el aspecto de la publicación que causa el problema.</br></br> 
+                        ⚠	No se prohíbe que un cargo político o religioso tenga una cuenta, sino que la cuenta en si misma se utilice con fines políticos/religiosos. El fin de este aspecto es proporcionar un entorno sin agresividad, estrés y que no segmente o divida a los usuarios, evitando así el confrontamiento.</br>
+
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ path('terminos_plataforma')}}"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button></a>
+                        <a href="#"><button type="button" class="btn btn-primary">Siguiente</button></a>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+    </div>
+
+{% endblock %}

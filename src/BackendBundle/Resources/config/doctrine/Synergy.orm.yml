@@ -1,0 +1,41 @@
+BackendBundle\Entity\Synergy:
+    type: entity
+    table: synergy
+    indexes:
+        fk_synergy_users:
+            columns:
+                - user_id
+        FK_122B0F1A8DE60B34:
+            columns:
+                - thought_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        thought:
+            targetEntity: Thought
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                thought_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

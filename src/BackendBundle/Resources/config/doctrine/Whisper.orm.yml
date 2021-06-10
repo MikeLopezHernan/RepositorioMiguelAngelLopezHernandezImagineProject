@@ -1,0 +1,70 @@
+BackendBundle\Entity\Whisper:
+    type: entity
+    table: whisper
+    indexes:
+        fk_sender:
+            columns:
+                - sender
+        fk_receiver:
+            columns:
+                - receiver
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        content:
+            type: text
+            nullable: true
+            length: null
+            options:
+                fixed: false
+        image:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        attachment:
+            type: string
+            nullable: true
+            length: 220
+            options:
+                fixed: false
+        creationDate:
+            type: datetime
+            nullable: true
+            column: creation_date
+        readed:
+            type: string
+            nullable: true
+            length: 3
+            options:
+                fixed: false
+    manyToOne:
+        receiver:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                receiver:
+                    referencedColumnName: id
+            orphanRemoval: false
+        sender:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sender:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

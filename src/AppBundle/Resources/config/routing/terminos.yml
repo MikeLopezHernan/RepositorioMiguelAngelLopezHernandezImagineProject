@@ -1,0 +1,6 @@
+terminos_plataforma: 
+    path: /TermsOfUse
+    defaults:  {_controller: AppBundle:Terminos:index}
+terminos_plataforma_pag2: 
+    path: /TermsOfUsepag2
+    defaults:  {_controller: AppBundle:Terminos:pag2}

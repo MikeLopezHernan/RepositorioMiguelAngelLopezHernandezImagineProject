@@ -1,0 +1,70 @@
+BackendBundle\Entity\Thought:
+    type: entity
+    table: thought
+    indexes:
+        fk_thought_user:
+            columns:
+                - user_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        text:
+            type: string
+            nullable: true
+            length: 250
+            options:
+                fixed: false
+        image:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        attachment:
+            type: string
+            nullable: true
+            length: 120
+            options:
+                fixed: false
+        creationDate:
+            type: datetime
+            nullable: true
+            column: creation_date
+        status:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+        videoyt:
+            type: string
+            nullable: true
+            length: 100
+            options:
+                fixed: false
+            column: videoYT
+        thoughtpadre:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: thoughtPadre
+    manyToOne:
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

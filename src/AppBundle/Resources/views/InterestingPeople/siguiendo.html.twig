@@ -1,0 +1,102 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block javascripts %}
+{{parent()}}
+<script type="text/javascript" src="{{ asset('assets/js/users.js') }}"></script>
+{% endblock %}
+{% block content %}
+    
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top:25px;">
+
+        <div class="list-group col-lg-3">
+            <div class="list-group-item busquedausuarios list-group-item-action flex-column align-items-start bg-info active" style="border-radius:20px; border-width: 10px; border-style: solid; border-color: white;">
+                <div style="text-align:center;">
+                    {% if type == 'siguiendo' %}
+                    <h3 class="mb-1">Usuarios seguidos por {{ obtener_user.usernick }}</h3>
+                    {% else %}
+                    <h3 class="mb-1">Seguidores de {{ obtener_user.usernick }}</h3>
+                    {% endif %}
+                    <small>Número de usuarios:&nbsp; {{pagination.getTotalItemCount}}</small>
+                </div>
+
+            </div>
+
+            </br></br>
+            <div class="box-content box-users">
+                {% for seguir in pagination %}
+                    {% if type== 'siguiendo' %}
+                        {% set user = seguir.followed %}
+                    {% else %}
+                        {% set user = seguir.user %}
+
+                    {% endif %}
+
+                    <div class="card border-light mb-4 user-item cadausuario">
+
+                        <div class="card-header">
+                            <div class="cabecera">
+                               <a href="{{ path('user_perfil',{'usernick':user.usernick}) }}">#{{ user.usernick }}</a> 
+
+                                {% if app.user.id != user.id%}
+                                    <div class="buttons-following float-right">
+                                        {% if type== 'siguiendo' %}
+                                        {% if user|interestingPeople(app.user)==true %}
+                                            <div class="d-flex flex-row boton-te-sigue" style="position:absolute; margin-left: -80px; margin-top:0px;">
+                                                <button type="button" class="btn btn-sm btn-info disabled">Te sigue</button><br>
+                                            </div>
+                                        {% endif %}
+                                        {% endif %}
+                                        <button type="button" class="btn btn-sm btn-success btn-follow {% if app.user|interestingPeople(user) == true %}d-sm-none{% endif %}" data-followed="{{user.id}}">
+                                            
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 18 18">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                            </svg>Follow</button>
+
+                                        <button type="button" class="btn btn-sm btn-secondary btn-unfollow {% if app.user|interestingPeople(user) == false %}d-sm-none{% endif %}" data-followed="{{user.id}}"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x" viewBox="0 0 18 18">
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                            </svg>Unfollow</button>
+
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="avatar">
+                                {% if user.userimage == null %}
+                                    <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="background: white; border-radius:500px; width:35px; height:35px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:-5px"/>
+
+                                {% else %}
+                                    <img src="{{ asset('uploads/users/'~user.userimage) }}" style="background: white; border-radius:500px; width:35px; height:35px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:-5px"/>
+
+                                {% endif %}
+                            </div>
+                            <h6 class="card-title">{{ user.name }}&nbsp;{{ user.surname }}</h6>
+                            <p class="card-text">{{user.biography}}</p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+            </br></br>
+
+
+        </div>
+
+    </div>
+            
+    
+
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 50px;">
+
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

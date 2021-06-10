@@ -1,0 +1,14 @@
+interestingPeople_follow: 
+    path: /follow
+    defaults:  {_controller: AppBundle:InterestingPeople:follow}
+    methods: [POST]
+interestingPeople_unfollow: 
+    path: /unfollow
+    defaults:  {_controller: AppBundle:InterestingPeople:unfollow}
+    methods: [POST]
+interestingPeople_siguiendo:
+    path: /following/{usernick}
+    defaults: {_controller: AppBundle:InterestingPeople:siguiendo, usernick:null}
+interestingPeople_seguidos:
+    path: /followed/{usernick}
+    defaults: {_controller: AppBundle:InterestingPeople:seguidos, usernick:null}

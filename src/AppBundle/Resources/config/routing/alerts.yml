@@ -1,0 +1,6 @@
+alerts_page:
+    path: /alerts
+    defaults: { _controller: AppBundle:Alert:index}
+alerts_count:
+    path: /alerts/count
+    defaults: { _controller: AppBundle:Alert:countAlerts}

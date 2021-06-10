@@ -1,0 +1,9 @@
+synergy_publication:
+    path: /synergy/{id}
+    defaults: { _controller: AppBundle:Synergy:synergy, id:null}
+unsynergy_publication:
+    path: /unsynergy/{id}
+    defaults: { _controller: AppBundle:Synergy:unsynergy, id:null}
+user_synergies:
+    path: /synergies/{usernick}
+    defaults: {_controller: AppBundle:Synergy:synergies, usernick:null}

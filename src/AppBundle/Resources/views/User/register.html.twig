@@ -1,0 +1,41 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/mensajesflash.js') }}"></script>
+{% endblock  %}
+{% block content %}
+
+    
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center; margin-top: 1em;">
+        <img src="../assets/images/frontier-circle4.png" class="img-fluid" alt="Responsive image" style="max-width: 100%;">
+    </div>
+    <div class="panelFlash">
+    <div class="container"  style="margin-top: 1em; text-align: center;">
+        <div class="col-lg-12" style="text-align: center";>
+
+            {% for message in app.session().flashbag().get('error')%}
+
+                <div class="alert alert-danger">{{ message }}</div>
+            {%endfor%}
+        </div>
+
+    </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content formularios" >
+
+            <div class="modal-body">
+                <div class="div-formulario-registro">
+                    {{ form_start(formulario,{'action':'','method':'POST'}) }}
+                    {{ form_errors(formulario) }}
+                    {{ form_end(formulario) }}
+
+                </div>
+
+            </div>
+                    <a href="{{ path('terminos_plataforma')}}" style="text-align: center;"><p>Al registrarte estás acepta la política de uso de la plataforma</p></a>
+        </div>
+    </div>
+{% endblock %}

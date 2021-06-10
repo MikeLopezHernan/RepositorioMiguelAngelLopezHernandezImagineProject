@@ -1,0 +1,104 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block content %}
+    
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center; margin-top: 10px;">
+        <img src="{{ asset('assets/images/logoPrincipal.png') }}"alt="logo" style="max-width: 100%;"/>
+    </div>
+
+
+    <div class="modal-dialog" role="document" style="position:relative; margin-top: 10px">  
+        <div class="modal-content formularios">
+            <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center;">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="text-align:center">¡Te estábamos esperando!</h4>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                
+                <form action="{{ path('login_check') }}" method="POST">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="username" name="_username" value="{{ultimoUsuario}}" class="form-control"/>
+                    </br>
+                    <label>Contraseña</label>
+                    <input type="password" id="password" name="_password"  class="form-control"/>
+
+                    <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center; margin-top: 2em;margin-bottom: 1em;">
+                        <button type="submit" class="btn btn-outline-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Iniciar sesión 
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                            </svg>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </button>
+                        
+                        
+                    </div>
+                    <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center; margin-top: 1em;margin-bottom: 1em;">
+                    <a class="nav-link-Registro" href="{{ path("register") }}">
+                            <button type="button" class="btn btn-outline-info">Crear nueva cuenta
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                                </svg>
+
+                            </button>
+                        </a>
+                    </div>
+                            
+                    <input type="hidden" name="_target_path" value="/home"/>
+                </form>
+                    {% if app.user ==null %}
+                        <div class="panelFlash">
+                            <div class="container"; style="margin-top: 1em; text-align: center; ">
+                                <div class="col-lg-12" style="text-align: center";>
+                                    {% for message in app.session().flashbag().get('status')%}
+
+                                        <div class="alert alert-success">{{ message }}</div>
+                                    {%endfor%}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    {% endif %}  
+                    <a href="{{ path('terminos_plataforma')}}" style="text-align: center;"><p>Por favor, antes que nada revise la política de uso de la plataforma</p></a>
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex flex-row justify-content-center alig-items-center" style="text-align: center;">
+                    
+                        <div class="card text-white bg-info mb-3" id="panelIncio" style="max-width: 33rem; margin-top:1rem ">
+
+                            <div class="card-body" >
+                                <h5 class="card-title">¡Te damos la bienvenida a Frontier!</h5>
+                                <p class="card-text">En Frontier creemos en la necesidad de un espacio social, alejado de políticas e ideologías. ¡Bienvenid@ a Frontier! </p>
+                            </div>
+                        </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+
+         
+           
+                
+                
+              
+    
+    
+            
+            
+            
+            
+       
+      
+    
+    
+    
+{% endblock %}

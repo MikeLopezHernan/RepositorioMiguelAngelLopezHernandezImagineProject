@@ -1,0 +1,24 @@
+app_user:
+    resource: "@AppBundle/Resources/config/routing/user.yml"
+    prefix: /
+app_thought:
+    resource: "@AppBundle/Resources/config/routing/thought.yml"
+    prefix: /
+app_following:
+    resource: "@AppBundle/Resources/config/routing/interestingPeople.yml"
+    prefix: /
+app_synergy:
+    resource: "@AppBundle/Resources/config/routing/synergy.yml"
+    prefix: /
+app_homepage:
+    path: /
+    defaults: {_controller: AppBundle:User:login}
+app_alerts:
+    resource: "@AppBundle/Resources/config/routing/alerts.yml"
+    prefix: /
+whisper:
+    resource: "@AppBundle/Resources/config/routing/whisper.yml"
+    prefix: /
+terms_of_use:
+    resource: "@AppBundle/Resources/config/routing/terminos.yml"
+    prefix: /

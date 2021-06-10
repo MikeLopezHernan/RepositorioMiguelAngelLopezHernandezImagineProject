@@ -1,0 +1,357 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('assets/js/bootbox.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/paginahome.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 3em;">
+
+        <!--PRimer columna vacia-->
+
+        <!--Segunda columna el usercard-->
+        <div class="user-card col-lg-2">
+
+            {% set user_stats = app.user|user_stats %}
+            <div class="estadisticas">
+                <ul class="list-group menulista">
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        {% if app.user.userimage == null %}
+                            <img class="imagenAvatarPerfil" src="{{ asset('assets/images/logouserdefecto.png') }}"/>
+
+                        {% else %}
+                            <img class="imagenAvatarPerfil" src="{{ asset('uploads/users/'~app.user.userimage) }}"/>
+
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="text-align: center;">
+
+                        <span class="nickname"><a href="{{ path('user_perfil',{'usernick':app.user.usernick}) }}"><h4>#{{ app.user.usernick }}</h4></a></span>
+
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ path('interestingPeople_siguiendo',{'usernick':app.user.usernick}) }}"><h6>Siguiendo</h6></a>
+                        <span class="badge badge-primary badge-pill">{{ user_stats.following }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ path('interestingPeople_seguidos',{'usernick':app.user.usernick}) }}"> <h6>Seguidores</h6> </a>
+                        <span class="badge badge-primary badge-pill">{{ user_stats.followers }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ path('user_perfil',{'usernick':app.user.usernick}) }}"> <h6>Thoughts </h6></a>
+                        <span class="badge badge-primary badge-pill">{{ user_stats.thoughts }}</span>
+                    </li>
+                    <li class="list-group-item  d-flex justify-content-between align-items-center">
+                        <a href="{{ path('user_synergies',{'usernick':app.user.usernick}) }}"><h6> Synergies </h6></a>
+                        <span class="badge badge-primary badge-pill">{{ user_stats.synergies }}</span>
+                    </li>
+
+                </ul>
+            </div>
+            </br>
+
+
+
+        </div>
+        <!--Otra columna vacía-->
+        <div class="col-lg-1">
+        </div>
+
+
+
+
+        <!--Publicar y timeline-->
+        <div id="timeline" class="col-lg-6">
+            <div class="containerPT">
+
+
+
+                <div class="card cajitaPublicar">
+
+                    <div class="cajaPublicacion card-body">
+                        <div id="caracteres">0/250</div>
+                        {{ form_start(form, {action: '', 'method':'POST'}) }}
+                        {{ form_end(form) }}
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!--TIMELINE-->
+            <!--En el caso de que no haya nada-->
+            {% if pagination.getTotalItemCount == null %}
+                <div class="card border-light mb-5 publication-item">
+                    <div class="card-header">
+                        <div class="avatarPublicacion ">
+                            <img src="{{asset('/assets/images/robot.gif')}}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+                        </div>
+                        <div class="autorPublicacion">
+
+                            <h5>¡Bienvenid@ a Frontier!</h5>
+                        </div>
+                    </div>
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+                        <p>Así se verá un Thought cuando lo publiques. Si te apetece puedes comentar tus pensamientos, lo que más te guste o apetezca en tu primer Thought. Recuerda que, también puedes buscar a más usuarios o amigos en el buscador de la parte superior. Frontier se encuentra en una fase muy temprana de su desarrollo, seguiremos trabajando incansablemente para mejorar la plataforma y lamentamos cualquier molestia que podamos causar. Si detectas que algo no anda bien o tienes cualquier duda o sugerencia puedes enviarla al canal de telegram: jfsjfds</p>
+
+                        <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 1em; margin-bottom: 1em;">
+
+                            <img class="foto-publicación" src="{{  asset('/assets/images/bEu.gif')}}"/>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            {% endif%}
+            <!--En el caso de que haya un thought o post de gente que seguimos-->
+            
+
+            {% for thought in pagination %}
+
+                <div class="card border-light mb-5 publication-item">
+
+                    <div class="card-header">
+
+                        {% if(thought.user.id is defined) and (thought.user.id == app.user.id) %}
+                            <button data-id="{{thought.id}}" type="button" class="btn btn-outline-danger borrarpubli">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+
+                        {% endif %}
+
+
+                        <div class="avatarPublicacion ">
+                            <a href="{{ path('user_perfil',{'usernick':thought.user.usernick}) }}">
+
+                                {% if thought.user.userimage == null %}
+                                    <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% else %}
+                                    <img src="{{ asset('uploads/users/'~thought.user.userimage) }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="autorPublicacion">
+                            <a href="{{ path('user_perfil',{'usernick':thought.user.usernick}) }}">
+                                <h5> #{{ thought.user.usernick }}</h5>
+                            </a>
+                        </div>
+
+
+                        <small class="fechaPublicacion">{{thought.creationDate|time_publication}}</small>
+                    </div>
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+
+                        <div id="idurl{{ thought.id }}" data-id="{{ thought.id }}"  >
+
+                            {% set texto = thought.text|metodosgenerales %}                                          
+
+                            {{ texto|raw }}
+
+
+
+
+                        </div>
+
+                        <br>
+
+                        {% if(thought.videoyt is defined) and (thought.videoyt != null)%}
+                            <br>
+                            <div class="embed-responsive embed-responsive-16by9" style="border-radius:15px;">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ thought.videoyt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            </div>
+                            <br>
+
+                        {% endif %}
+
+                        {% if(thought.image is defined) and (thought.image != null)%}
+
+                            {% if '.mp4' in thought.image%}
+                                <br>
+
+                                <div class="embed-responsive embed-responsive-16by9" style="border-radius:15px;">
+                                    <video controls>
+
+                                        <source src="{{asset('uploads/thoughts/images/'~thought.image) }}" type="video/mp4">
+                                    </video>
+                                </div>
+                                <br>
+                            {% else %}
+                                <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 2em;">
+                                    <a href="{{ asset('uploads/thoughts/images/'~thought.image) }}" class="imagen-aparte" aria-hidden="true" target="_blank">
+
+                                        <img class="foto-publicación" src="{{asset('uploads/thoughts/images/'~thought.image) }}"/>
+                                    </a>
+                                </div>
+                                <br>
+                            {% endif %}
+
+
+                        {% endif %}
+
+                        {% if(thought.attachment is defined) and (thought.attachment != null)%}
+
+                            <hr style="border: 1px solid #75C6C6">
+                        {% endif %}
+                        {% if(thought.attachment is defined) and (thought.attachment != null)%}
+
+                            <div class="adjuntos ms-right" style="margin-top:25px;">
+                                <small>{{ thought.attachment }}</small>
+                                <a href="{{ asset('uploads/thoughts/documents/'~thought.attachment) }}" class="btn-doc" aria-hidden="true" target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+                                    </svg>
+                                </a>
+                            </div>
+
+                        {% endif %}
+                        <br>
+                        <div class="float-left like">
+                            <!--Boton de synergy-->
+                            {% set contadorLikes = thought|counterlikes  %}
+
+                            <span data-id="{{thought.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-synergy {% if app.user|synerged(thought) == true %}d-sm-none{%endif%}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                </svg>
+                            </span>
+
+                            <span data-id="{{thought.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-unsynergy {% if app.user|synerged(thought) == false %}d-sm-none{%endif%}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                </svg>
+                            </span>
+
+                        </div>
+
+                        <div id="conLik{{thought.id}}">
+                            {{ contadorLikes.likes_count }}
+                        </div>
+
+                        <div class="panel panel-default" >
+                            <div class="panel-heading">
+                                <div class="botonComentarThought">
+
+                                    <a data-toggle="collapse" href="#collapse1{{thought.id}}"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-chat-quote" viewBox="0 0 16 16">
+                                        <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
+                                        <path d="M7.066 6.76A1.665 1.665 0 0 0 4 7.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 0 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 7.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 0 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z"/>
+                                        </svg></a>
+                                </div>
+                            </div>
+                            <div id="collapse1{{thought.id}}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="panelComentarios"></div>
+                                    <div class="card ">
+                                        <div class="card-body ">
+                                            <small>En respuesta a #{{thought.user.usernick}}</small>
+                                            <div id="caracteres">0/250</div>
+                                            <form action="{{ path("app_homepage") }}" method="POST">
+                                                <label for="escribirComentario">Escribir comentario</label>
+                                                <textarea id="textaAreaComentario" class="form-control">
+                                                </textarea>
+                                                <br>
+                                                <label for="imagenComentario">Adjuntar imagen, gif o video</label>
+                                                <input type="file" id="imagenComentario" name="miImagenComentario" class="form-control">
+                                                <br>
+                                                <input type="hidden" name="{{ thought.id }}" />
+
+                                                <input type="hidden" name="_target_path" value="/home"/>
+
+                                                <input type="submit" value="Enviar comentario" class="boton-comentario btn btn-success float-right">
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+        </div>
+        <!--ultima columna vacia-->
+        <div class="col-lg-2">
+
+            <div class="chat" onclick="this.classList.toggle('active')" title="Escribir un Thought">
+                <div class="contenidoBotonThought"> 
+
+                    <div class="background"></div>
+                    <svg class="chat-bubble" width="100" height="100" viewBox="0 0 100 100">
+                    <g class="bubble">
+                    <path class="line line1" d="M 30.7873,85.113394 30.7873,46.556405 C 30.7873,41.101961
+                          36.826342,35.342 40.898074,35.342 H 59.113981 C 63.73287,35.342
+                          69.29995,40.103201 69.29995,46.784744" />
+                    <path class="line line2" d="M 13.461999,65.039335 H 58.028684 C
+                          63.483128,65.039335
+                          69.243089,59.000293 69.243089,54.928561 V 45.605853 C
+                          69.243089,40.986964 65.02087,35.419884 58.339327,35.419884" />
+                    </g>
+                    <circle class="circle circle1" r="1.9" cy="50.7" cx="42.5" />
+                    <circle class="circle circle2" cx="49.9" cy="50.7" r="1.9" />
+                    <circle class="circle circle3" r="1.9" cy="50.7" cx="57.3" />
+                    </svg>
+                </div>
+
+            </div>
+            
+           <a  href="{{ path("whisper") }}">
+            <div class="mailbox" title="Whispers">
+                <div class="background"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-mailbox2" viewBox="0 0 16 16" style="position:absolute; margin-top: 23px; margin-left: 25px;">
+                <path d="M9 8.5h2.793l.853.854A.5.5 0 0 0 13 9.5h1a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5H9v1z"/>
+                <path d="M12 3H4a4 4 0 0 0-4 4v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a4 4 0 0 0-4-4zM8 7a3.99 3.99 0 0 0-1.354-3H12a3 3 0 0 1 3 3v6H8V7zm-3.415.157C4.42 7.087 4.218 7 4 7c-.218 0-.42.086-.585.157C3.164 7.264 3 7.334 3 7a1 1 0 0 1 2 0c0 .334-.164.264-.415.157z"/>
+                </svg>
+                <h4><span class="badge badge-primary badge-pill notificacionesWhisper" style="margin-top:20px; margin-left: 10px;position:absolute;"></span></h4>
+            </div>
+           </a>
+
+            
+
+            <div class="panelFlash">
+                <div class="container"; style="margin-top: 1em; text-align: center; ">
+                    <div class="col-lg-12" style="text-align: center";>
+                        {% for message in app.session().flashbag().get('status')%}
+
+                            <div class="alert alert-info">{{ message }}</div>
+                        {%endfor%}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+{% endblock %}

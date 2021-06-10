@@ -1,0 +1,39 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+
+ 
+{% block content %}
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 10px;">
+      
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="text-align: center;"> Términos de uso de la plataforma</h5>
+                    
+                </div>
+                <div class="modal-body" style="text-align: justify;">
+                    <p>En Frontier  pretendemos crear una sana relación del usuario con las redes sociales, buscando ser una alternativa a las redes sociales actuales-tradicionales.
+                        </br></br>
+                        Frontier ha desarrollado su propia política y términos de uso, cuya denominación es la política “Imagine”.
+                        Esta política de términos de uso de la plataforma se basa en la conocida canción “Imagine” de John Lennon, donde de manera digital
+                        se pretende recrear el lugar que describe dicha canción. Queremos ser un lugar excento de aquello que causa el odio y división en la soaciedad ( política y religion), que sea una plataforma que nos acerque como personas, que nos aleje de aquello que pretenda
+                        dividirnos como sociedad y que a su vez promueva un uso responsable de la misma.
+
+                        </br></br>En Frontier creemos y apostamos por una política centrada en los derechos de cada persona, donde se valore a cada individuo como se merece,
+                        por ello, el respeto por los derechos humanos de cada persona es el pilar fundamental que cimenta esta plataforma.
+                        De la misma manera, queremos servir de ejemplo de que hay alternativas al modelo seguido actualmente por las grandes redes sociales.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    
+                    <a href="{{ path('terminos_plataforma_pag2')}}"><button type="button" class="btn btn-primary">Siguiente</button></a>
+                    <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atras</button>-->
+                </div>
+            </div>
+        </div>
+
+        
+
+
+    </div>
+
+{% endblock %}

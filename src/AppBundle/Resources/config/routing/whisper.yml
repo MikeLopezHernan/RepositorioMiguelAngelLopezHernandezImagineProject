@@ -1,0 +1,9 @@
+whisper:
+    path: /whisper
+    defaults: {_controller: AppBundle:Whisper:index}
+whisper_enviado:
+    path: /whisper/enviados
+    defaults: {_controller: AppBundle:Whisper:enviados}
+whisper_alert:
+    path: /whisper/alerts/count
+    defaults: {_controller: AppBundle:Whisper:noLeido}

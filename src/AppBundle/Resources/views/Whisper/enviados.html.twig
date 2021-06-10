@@ -1,0 +1,157 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('assets/js/bootbox.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/paginahome.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 3em;">
+
+        <div class="col-lg-2">
+
+                 
+                            
+                            
+           <ul class="list-group menulista">
+
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #75C6C6">
+                    <h7 style="color:white; text-align: center; margin: 0 auto;">WHISPERS ENVIADOS</h7>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                    <a href="{{ path('whisper') }}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-envelope-open" viewBox="0 0 20 20">
+                            <path d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.818l5.724 3.465L8 8.917l1.276.766L15 6.218V5.4a1 1 0 0 0-.53-.882l-6-3.2zM15 7.388l-4.754 2.877L15 13.117v-5.73zm-.035 6.874L8 10.083l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738zM1 13.117l4.754-2.852L1 7.387v5.73zM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2z"/>
+                        </svg>&nbsp;Whispers recibidos</a>
+                </li>
+                
+            </ul>                 
+
+        </div>
+        <div class="col-lg-1">
+        </div>
+
+        <!--WHISPER ENVIADOS-->
+
+            <div id="timeline" class="col-lg-6">
+                 {% if pagination.getTotalItemCount == null %}
+                <div class="card border-light mb-5 publication-item">
+                    <div class="card-header">
+                        <small style="  float: left !important; margin-top:22px;margin-right: 10px;
+                               ">De:</small>
+                        <div class="avatarPublicacion ">
+                            <img src="{{  asset('/assets/images/robot.gif')}}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+                        </div>
+                        <div class="autorPublicacion">
+
+                            <h5>#Frontier</h5>
+                        </div>
+                    </div>
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+                        <p>Aun no has enviado un Whisper a otro usuari@. Cuando envíes alguno aparecerá en esta sección</p>
+
+                        <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 1em; margin-bottom: 1em;">
+
+                            <img class="" src="{{  asset('/assets/images/bus.gif')}}"/>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            {% endif%}
+                {% for whisper in pagination %}
+
+
+                    <div class="card border-light mb-5 publication-item">
+
+                        <div class="card-header">
+
+                            <small style="  float: left !important; margin-top:22px;margin-right: 10px;
+                                   ">Para:</small>
+
+                            <div class="avatarPublicacion ">
+                                {% if whisper.receiver.userimage == null %}
+                                    <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% else %}
+                                    <img src="{{ asset('uploads/users/'~whisper.receiver.userimage) }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% endif %}
+                            </div>
+                            <div class="autorPublicacion">
+                                <h5><a href="{{ path('user_perfil',{'usernick':whisper.receiver.usernick}) }}">#{{whisper.receiver.usernick}}                                </a>
+                                </h5>
+                            </div>
+
+
+                            <small class="fechaPublicacion">{{whisper.creationDate|time_publication}}</small>
+                        </div>
+                        <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+
+                        <div id="idurl{{ whisper.id }}" data-id="{{ whisper.id }}"  >
+
+                            {% set texto = whisper.content|metodosgenerales %}                                          
+
+                            {{ texto|raw }}
+
+
+
+
+                        </div>
+                            
+                            <br>
+                                {% if(whisper.image is defined) and (whisper.image != null)%}
+
+                                    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 2em;">
+                                        <a href="{{ asset('uploads/whispers/images/'~whisper.image) }}" class="imagen-aparte" aria-hidden="true" target="_blank">
+
+                                            <img class="foto-publicación" src="{{asset('uploads/whispers/images/'~whisper.image) }}"/>
+                                        </a>
+                                    </div>
+
+                                {% endif %}
+
+                                {% if(whisper.attachment is defined) and (whisper.attachment != null)%}
+
+                                    <hr style="border: 1px solid #75C6C6">
+                                    {% endif %}
+                                    {% if(whisper.attachment is defined) and (whisper.attachment != null)%}
+
+                                        <div class="adjuntos">
+                                            <small>{{ whisper.attachment }}</small>
+
+                                            <a href="{{ asset('uploads/whispers/documents/'~whisper.attachment) }}" class="btn-doc" aria-hidden="true" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    </div>
+
+                                    </div>
+
+                                {% endfor %}
+
+                                <div class="navigation">
+                                    {{ knp_pagination_render(pagination) }}
+                                </div>
+
+                                </div>
+
+
+
+
+                                <div class="col-lg-1">
+                                </div>
+                                <div class="col-lg-2"></div>
+                                </div>
+                            {% endblock %}

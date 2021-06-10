@@ -1,0 +1,16 @@
+BackendBundle\Entity\User:
+    properties:
+        maildir:
+            - Email:
+                message: La dirección de correo "{{ value }}" no es válida.
+                checkMX: false
+        name:
+            - NotBlank: {message: "El nombre es obligatorio."}
+        surname:
+            - NotBlank: {message: "Debe ingresar al menos un apellido."}
+        usernick:
+            - NotBlank: {message: "Debe ingresar un nick de usuario."}
+        
+        
+        
+            

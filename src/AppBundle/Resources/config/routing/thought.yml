@@ -1,0 +1,6 @@
+home_thought: 
+    path: /home
+    defaults:  { _controller: AppBundle:Thought:index }
+borrar_Thought:
+    path: /thought/borrar/{id}
+    defaults: { _controller: AppBundle:Thought:borrarThought, id:null }

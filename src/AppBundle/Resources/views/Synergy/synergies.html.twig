@@ -1,0 +1,218 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('assets/js/bootbox.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/paginahome.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 3em;">
+
+        <!--PRimer columna vacia-->
+
+        <!--Segunda columna el usercard-->
+        <div class="user-card col-lg-2">
+
+
+        </div>
+        <!--Otra columna vacía-->
+        <div class="col-lg-1">
+        </div>
+
+
+
+
+        <!--Publicar y timeline-->
+        <div id="timeline" class="col-lg-6">
+            <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top:25px;">
+
+                <div class="avatarProfile">
+                    {% if user.userimage == null %}
+                        <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:200px; height:200px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                    {% else %}
+                        <img src="{{ asset('uploads/users/'~user.userimage) }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:200px; height:200px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="jumbotron" style="margin-top:-100px; ">
+
+                <div class="contenidoJumbo" style ="margin-top:70px;">
+
+                    <div class="card-body">
+
+                        <div class="corazon"><svg style="color: #E24844; margin-top:-280px;" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                            </svg></div>
+
+
+                        <div style="text-align:center;">
+
+                            <h3 style="margin-top:-50px;">Biblioteca de #{{ user.usernick }}</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--TIMELINE-->
+            <!--En el caso de que no haya nada-->
+            {% if pagination.getTotalItemCount == null %}
+                <div class="card border-light mb-5 publication-item">
+
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+                        <p>#{{ user.usernick }} aún no ha añadido ningún Thought a su biblioteca de Synergies</p>
+                        <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 1em; margin-bottom: 1em;">
+
+                            <img class="foto-publicación" src="../assets/images/bEu.gif"/>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            {% endif%}
+            <!--En el caso de que haya un thought o post de gente que seguimos-->
+
+
+            {% for synergy in pagination %}
+                {% set thought = synergy.thought %}
+                <div class="card border-light mb-5 publication-item">
+
+                    <div class="card-header">
+
+                        {% if(thought.user.id is defined) and (thought.user.id == app.user.id) %}
+                            <button data-id="{{thought.id}}" type="button" class="btn btn-outline-danger borrarpubli">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+
+                        {% endif %}
+
+
+                        <div class="avatarPublicacion ">
+                            {% if thought.user.userimage == null %}
+                                <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~thought.user.userimage) }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                            {% endif %}
+                        </div>
+                        <div class="autorPublicacion">
+                            <a href="{{ path('user_perfil',{'usernick':thought.user.usernick}) }}">
+                                <h5> #{{ thought.user.usernick }}</h5>
+                            </a>
+                        </div>
+
+
+                        <small class="fechaPublicacion">{{thought.creationDate|time_publication}}</small>
+                    </div>
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+
+                        <div id="idurl{{ thought.id }}" data-id="{{ thought.id }}"  >
+
+                            {% set texto = thought.text|metodosgenerales %}                                          
+
+                            {{ texto|raw }}
+
+
+
+
+                        </div>
+
+                        <br>
+
+                        {% if(thought.videoyt is defined) and (thought.videoyt != null)%}
+                            <br>
+                            <div class="embed-responsive embed-responsive-16by9" style="border-radius:15px;">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ thought.videoyt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            </div>
+                            <br>
+
+                        {% endif %}
+                            {% if(thought.image is defined) and (thought.image != null)%}
+
+                                <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 2em;">
+                                    <a href="{{ asset('uploads/thoughts/images/'~thought.image) }}" class="imagen-aparte" aria-hidden="true" target="_blank">
+
+                                        <img class="foto-publicación" src="{{asset('uploads/thoughts/images/'~thought.image) }}"/>
+                                    </a>
+                                </div>
+
+                            {% endif %}
+
+                            {% if(thought.attachment is defined) and (thought.attachment != null)%}
+
+                                <hr style="border: 1px solid #75C6C6">
+                                {% endif %}
+                                {% if(thought.attachment is defined) and (thought.attachment != null)%}
+
+                                    <div class="adjuntos">
+                                        <small>{{ thought.attachment }}</small>
+
+                                        <a href="{{ asset('uploads/thoughts/documents/'~thought.attachment) }}" class="btn-doc" aria-hidden="true" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                                                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+
+                                {% endif %}
+                                <br>
+                                    <div class="float-left like">
+                                        <!--Boton de synergy-->
+                                        {% set contadorLikes = thought|counterlikes  %}
+
+                                        <span data-id="{{thought.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-synergy {% if app.user|synerged(thought) == true %}d-sm-none{%endif%}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                            </svg>
+                                        </span>
+
+                                        <span data-id="{{thought.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-unsynergy {% if app.user|synerged(thought) == false %}d-sm-none{%endif%}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                            </svg>
+                                        </span>
+
+                                    </div>
+
+                                    <div id="conLik{{thought.id}}">
+                                        {{ contadorLikes.likes_count }}
+                                    </div>
+                                    </div>
+
+                                    </div>
+
+                                {% endfor %}
+
+                                <div class="navigation">
+                                    {{ knp_pagination_render(pagination) }}
+                                </div>
+                                </div>
+                                <!--ultima columna vacia-->
+                                <div class="col-lg-2">
+
+
+
+                                </div>
+
+
+
+
+                                </div>
+
+
+
+
+
+                            {% endblock %}

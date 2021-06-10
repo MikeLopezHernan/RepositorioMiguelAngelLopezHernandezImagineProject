@@ -1,0 +1,64 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    interestingPeople.twig_extension:
+        class: AppBundle\Twig\FollowingExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    time_publication.twig_extension:
+        class: AppBundle\Twig\timePublicationExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    synerged.twig_extension:
+        class: AppBundle\Twig\SynergyExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    user_stats.twig_extension:
+        class: AppBundle\Twig\UserStatsExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    counterlikes.twig_extension:
+        class: AppBundle\Twig\CounterLikesExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    app.alert_service:
+        class: AppBundle\Services\AlertService
+        arguments: ["@doctrine.orm.entity_manager"]
+    obtener_user.twig_extension:
+        class: AppBundle\Twig\ObtenerUserExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    obtener_foto.twig_extension:
+        class: AppBundle\Twig\ObtenerFotoExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    metodosgenerales.twig_extension:
+        class: AppBundle\Twig\MetodosGeneralesExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+    

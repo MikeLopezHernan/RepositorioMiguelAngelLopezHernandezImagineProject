@@ -1,0 +1,270 @@
+{% extends "AppBundle:Layouts:layout.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('assets/js/bootbox.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/paginahome.js') }}"></script>
+
+{% endblock %}
+{% block content %}
+
+
+
+
+
+
+    <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 3em;">
+
+        <!--PRimer columna vacia-->
+
+        <!--Segunda columna el usercard-->
+        <div class="user-card col-lg-2">
+
+
+        </div>
+        <!--Otra columna vacía-->
+        <div class="col-lg-1">
+        </div>
+
+
+
+
+        <!--Publicar y timeline-->
+        <div id="timeline" class="col-lg-6">
+
+
+            {% if pagination.getTotalItemCount == null %}
+                <div class="card border-light mb-5 publication-item">
+                    <div class="card-header">
+                       
+                        <div class="avatarPublicacion ">
+                            <img src="{{  asset('/assets/images/robot.gif')}}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+                        </div>
+                        <div class="autorPublicacion">
+
+                            <h5>#Frontier</h5>
+                        </div>
+                    </div>
+                    <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+                        <p>¡Pasa y ponte cómod@!. Si alguien añade cualquiera de tus Thoughts a su biblioteca de Synergies o te sigue, aparecerá aquí. Soy un mensaje temporal, desde que ocurra uno de estos eventos ya no estaré por aquí. ¡Disfuta de tu estancia en Frontier!</p>
+
+                        <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 1em; margin-bottom: 1em;">
+
+                            <img class="" src="{{  asset('/assets/images/megafono.gif')}}"/>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            {% endif%}
+
+            
+
+
+            {% for alerts in pagination %}
+
+                {% set sacarUsuario = alerts.notiTypeId|obtener_user %}
+
+                {% set sacarContenido = alerts.misscellaneous|obtener_foto %}
+
+                {% if alerts.notiType == "follow" %}
+
+                    <div class="card border-light mb-5 publication-item anadidoBorder">
+
+                        <div class="card-header ">
+
+                            <div class="d-flex flex-row justify-content-center alig-items-center">
+
+                                <a href = "{{path('user_perfil',{'usernick':sacarUsuario.usernick})}}">
+                                    {% if sacarUsuario.userimage == null %}
+                                        <img class ="imgUsuarioAlerta" src="{{ asset('assets/images/logouserdefecto.png') }}"/>
+
+                                    {% else %}
+                                        <img class="imgUsuarioAlerta" src="{{ asset('uploads/users/'~sacarUsuario.userimage) }}"/>
+
+                                    {% endif %}
+                                </a> 
+
+                            </div>
+                            <div class="d-flex flex-row justify-content-center alig-items-center">
+                                <a href = "{{path('user_perfil',{'usernick':sacarUsuario.usernick})}}">
+
+                                    <h5>¡ {{ sacarUsuario.usernick }} te ha seguido!</h5>   </a>
+
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-center alig-items-center">
+
+                                <small class="fechaPublicacion">{{alerts.creationDate|time_publication}}</small>
+
+                            </div>       
+
+                        </div>
+                    </div>
+
+
+                {% endif %}
+
+                {% if alerts.notiType == "synergy" %}
+
+
+
+
+                    <div class="card border-light mb-5 publication-item">
+
+                        <div class="card-header">
+
+                            <div class="synergyCreator float-right">
+
+                                {% if(sacarContenido.user.id is defined) and (sacarContenido.user.id == app.user.id) %}
+                                    <div style="float:right">
+                                        <a href = "{{path('user_perfil',{'usernick':sacarUsuario.usernick})}}"><div class="avatar">
+                                                {% if sacarUsuario.userimage == null %}
+                                                    <img class="imgMegusta" src="{{ asset('assets/images/logouserdefecto.png') }}"/>
+
+                                                {% else %}
+                                                    <img class="imgMegusta" src="{{ asset('uploads/users/'~sacarUsuario.userimage) }}"/>
+
+                                                {% endif %}
+                                            </div><div style="margin-top:-30px; color:white; margin-right: 20px;">#{{ sacarUsuario.usernick }}</div> </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="fondoCorazon">
+                                <div class="corazon2 float-right"><svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-heart" viewBox="0 0 30 30">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                    </svg></div>
+                            </div>
+
+
+
+
+                            <div class="avatarPublicacion">
+                                {% if sacarContenido.user.userimage == null %}
+                                    <img src="{{ asset('assets/images/logouserdefecto.png') }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% else %}
+                                    <img src="{{ asset('uploads/users/'~sacarContenido.user.userimage) }}" style="border: solid 3px #62A09E; background: white; border-radius:500px; width:60px; height:60px; overflow: hidden;float:left;right:10px; margin-right:15px; margin-top:5px"/>
+
+                                {% endif %}
+                            </div>
+                            <div class="autorPublicacion">
+                                <a href="{{ path('user_perfil',{'usernick':sacarContenido.user.usernick}) }}">
+                                    <h5> #{{ sacarContenido.user.usernick }}</h5>
+                                </a>
+                            </div>
+
+
+                            <small class="fechaPublicacion">{{alerts.creationDate|time_publication}}</small>
+                        </div>
+                        <div class="card-body cuerpoPublicacion" style="min-height: 80px;">
+                            
+                            <div id="idurl{{ sacarContenido .id }}" data-id="{{ sacarContenido.id }}"  >
+
+                            {% set texto = sacarContenido.text|metodosgenerales %}                                          
+
+                            {{ texto|raw }}
+
+
+
+
+                        </div>
+                            {% if(sacarContenido.videoyt is defined) and (sacarContenido.videoyt != null)%}
+                            <br>
+                            <div class="embed-responsive embed-responsive-16by9" style="border-radius:15px;">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ sacarContenido.videoyt}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            </div>
+                            <br>
+
+                        {% endif %}
+                           
+                            <br>
+                            {% if(sacarContenido.image is defined) and (sacarContenido.image != null)%}
+
+                                <div class="d-flex flex-row justify-content-center alig-items-center" style="margin-top: 2em;">
+                                    <a href="{{ asset('uploads/thoughts/images/'~sacarContenido.image) }}" class="imagen-aparte" aria-hidden="true" target="_blank">
+
+                                        <img class="foto-publicación" src="{{asset('uploads/thoughts/images/'~sacarContenido.image) }}"/>
+                                    </a>
+                                </div>
+
+                            {% endif %}
+
+                            {% if(sacarContenido.attachment is defined) and (sacarContenido.attachment != null)%}
+
+                                <hr style="border: 1px solid #75C6C6">
+                            {% endif %}
+                            {% if(sacarContenido.attachment is defined) and (sacarContenido.attachment != null)%}
+
+                                <div class="adjuntos">
+                                    <small>{{ sacarContenido.attachment }}</small>
+
+
+                                    <a href="{{ asset('uploads/thoughts/documents/'~sacarContenido.attachment) }}" class="btn-doc" aria-hidden="true" target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+
+                            {% endif %}
+                            <br>
+                            <div class="float-left like">
+                                <!--Boton de synergy-->
+                                {% set contadorLikes = sacarContenido|counterlikes  %}
+
+                                <span data-id="{{sacarContenido.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-synergy {% if app.user|synerged(sacarContenido) == true %}d-sm-none{%endif%}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                    <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                    </svg>
+                                </span>
+
+                                <span data-id="{{sacarContenido.id}}" page-id="{{ pagination.getPaginationData.lastItemNumber / 4 }}" data-like="{{ contadorLikes.likes_count }}" class="btn-unsynergy {% if app.user|synerged(sacarContenido) == false %}d-sm-none{%endif%}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bookmark-heart-fill megustablanco" viewBox="0 0 16 16">
+                                    <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                    </svg>
+                                </span>
+
+                            </div>
+
+                            <div id="conLik{{sacarContenido.id}}">
+                                {{ contadorLikes.likes_count }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                {% endif %}
+
+            {% endfor %}
+            <div class="clearfix"></div>
+
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+        </div>
+        <!--ultima columna vacia-->
+        <div class="col-lg-2">
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
